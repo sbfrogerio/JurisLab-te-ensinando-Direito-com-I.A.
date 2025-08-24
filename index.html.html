@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JurisLab — te ensinando Direito com I.A.</title>
+  <meta name="description" content="JurisLab: assistente para estudar e praticar Direito com I.A. Explicações objetivas, trilhas de estudo, mapas mentais, quizzes e checklists processuais. Criado por Rogério Bezerra (@rogeriosbf)." />
+  <meta property="og:title" content="JurisLab — te ensinando Direito com I.A." />
+  <meta property="og:description" content="Explicações com base legal, trilhas inteligentes, quizzes e leitura assistida de julgados."> 
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="pt_BR" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Ctext y='1em' font-size='96'%3E⚖️%3C/text%3E%3C/svg%3E" />
+  <style>
+    :root{
+      --bg:#0b0f1a; --card:#0f172a; --text:#e5e7eb; --muted:#a3aab7;
+      --brand:#0dbf91; --brand-2:#c4a35a; --ring:rgba(13,191,145,.35);
+      --shadow:0 10px 30px rgba(0,0,0,.35); --radius:16px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0; font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", sans-serif; color:var(--text); line-height:1.65;
+      background: radial-gradient(1200px 600px at 10% -10%, rgba(13,191,145,.12), transparent 60%),
+                  radial-gradient(900px 500px at 90% 10%, rgba(196,163,90,.10), transparent 60%),
+                  linear-gradient(180deg, var(--bg), #0a0e17 40%, #0b101a);
+      -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+    a{color:var(--brand); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .container{width:min(1120px,92vw); margin-inline:auto}
+
+    /* NAV */
+    .nav{position:sticky; top:0; z-index:50; backdrop-filter:saturate(1.1) blur(10px); background:rgba(11,15,26,.6); border-bottom:1px solid rgba(255,255,255,.06)}
+    .nav-inner{display:flex; align-items:center; justify-content:space-between; padding:14px 0}
+    .brand{display:flex; gap:12px; align-items:center; font-weight:800; letter-spacing:.2px}
+    .brand .logo{width:36px; height:36px; display:grid; place-items:center; border-radius:10px; background:linear-gradient(135deg, var(--brand), #21e7b1); color:#06291f; font-weight:900; box-shadow:var(--shadow)}
+    .nav .links{display:none}
+    @media(min-width:860px){ .nav .links{display:flex; gap:18px; opacity:.9} }
+    .nav a.btn{display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; background:var(--brand); color:#052c22; font-weight:700; box-shadow:0 6px 18px var(--ring); border:0}
+
+    /* HERO */
+    .hero{position:relative; padding:72px 0 32px}
+    .hero .bg-orn{position:absolute; inset:-10% -20% auto -20%; z-index:-1; pointer-events:none; opacity:.35; filter:blur(30px)}
+    .hero h1{font-size:clamp(28px,3.2vw,48px); line-height:1.15; margin:6px 0 12px}
+    .hero p.sub{font-size:clamp(16px,1.6vw,20px); color:var(--muted); margin:6px 0 18px}
+    .badges{display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 26px}
+    .badge{padding:6px 10px; border:1px solid rgba(255,255,255,.12); border-radius:999px; font-size:13px; color:#d1d5db; background:rgba(255,255,255,.03)}
+    .cta{display:flex; flex-wrap:wrap; gap:12px; margin-top:10px}
+    .btn{display:inline-flex; align-items:center; gap:10px; padding:14px 18px; border-radius:14px; border:1px solid rgba(255,255,255,.08); background:#0e1526; color:#e7f6f0; font-weight:700; box-shadow:0 10px 24px rgba(0,0,0,.25)}
+    .btn.primary{background:linear-gradient(135deg, var(--brand), #1ed6a8); color:#03261d; border-color:transparent}
+    .btn.secondary{background:linear-gradient(135deg, #1a243d, #0f172a)}
+    .btn.ghost{background:transparent}
+
+    /* SECTION */
+    section{padding:56px 0}
+    h2.section-title{font-size:clamp(22px,2.4vw,32px); margin:0 0 20px; letter-spacing:.2px}
+    p.section-lead{color:var(--muted); margin:0 0 26px}
+
+    /* GRID + CARDS */
+    .grid{display:grid; gap:18px}
+    @media(min-width:720px){ .grid.cols-3{grid-template-columns:repeat(3,1fr)} .grid.cols-2{grid-template-columns:repeat(2,1fr)} }
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.08); border-radius:var(--radius); padding:20px; box-shadow:var(--shadow)}
+    .card h3{margin:6px 0 8px; font-size:18px}
+    .card p{color:#cbd5e1; margin:0}
+    .icon{width:36px; height:36px; display:grid; place-items:center; border-radius:9px; background:rgba(13,191,145,.12); border:1px solid rgba(13,191,145,.25)}
+
+    /* STEPPER */
+    .stepper{counter-reset:step}
+    .step{display:flex; gap:16px; padding:18px; background:rgba(255,255,255,.03); border:1px dashed rgba(255,255,255,.12); border-radius:14px}
+    .step::before{counter-increment:step; content:counter(step); width:36px; height:36px; display:grid; place-items:center; background:var(--brand); color:#06261d; border-radius:10px; font-weight:900}
+
+    /* FAQ */
+    details{background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08); border-radius:12px; padding:14px 16px}
+    details+details{margin-top:10px}
+    summary{cursor:pointer; font-weight:700}
+
+    /* CALLOUT */
+    .callout{display:flex; gap:14px; align-items:flex-start; background:linear-gradient(180deg, rgba(13,191,145,.14), rgba(13,191,145,.06)); border:1px solid rgba(13,191,145,.35); padding:14px 16px; border-radius:14px}
+
+    /* FOOTER */
+    footer{border-top:1px solid rgba(255,255,255,.06); background:#0a0f1b; padding:40px 0 60px; color:#aab3c2}
+    .muted{color:var(--muted)}
+
+    /* PRINT */
+    @media print{ .nav,.cta,.btn,.hero .bg-orn{display:none!important} body{background:#fff; color:#111827} .card,details,.step{border-color:#e5e7eb; background:#fff} a{color:#0b7f64}}
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <div class="nav">
+    <div class="container nav-inner">
+      <div class="brand">
+        <div class="logo">JL</div>
+        <div>JurisLab</div>
+      </div>
+      <div class="links">
+        <a href="#guia">Guia</a>
+        <a href="#recursos">Recursos</a>
+        <a href="#trilhas">Trilhas</a>
+        <a href="#fluxo">Fluxo</a>
+        <a href="#faq">FAQ</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#consultoria">Consultoria</a>
+        <a href="#contato">Contato</a>
+      </div>
+      <a class="btn" rel="noopener noreferrer" target="_blank" href="https://chatgpt.com/g/g-68aa5745692c8191bcc25432b8341ced-jurislab-te-ensinando-direito-com-i-a">Abrir JurisLab</a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header class="hero">
+    <svg class="bg-orn" width="1400" height="520" viewBox="0 0 1400 520" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><radialGradient id="g1" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(700 120) rotate(90) scale(280 600)"><stop stop-color="#0dbf91" stop-opacity=".25"/><stop offset="1" stop-color="#0dbf91" stop-opacity="0"/></radialGradient></defs><circle cx="700" cy="120" r="280" fill="url(#g1)"/></svg>
+    <div class="container">
+      <div class="badges">
+        <span class="badge">Aprendizado guiado</span>
+        <span class="badge">Plain Language</span>
+        <span class="badge">Legal Tech</span>
+      </div>
+      <h1>JurisLab — te ensinando Direito com I.A.</h1>
+      <p class="sub">Explicações objetivas, <strong>trilhas de estudo</strong>, <strong>quizzes</strong>, mapas mentais e leitura assistida de julgados. Para estudantes, estagiários e profissionais que querem aprender e revisar com velocidade.</p>
+      <div class="cta">
+        <a class="btn primary" rel="noopener noreferrer" target="_blank" href="https://chatgpt.com/g/g-68aa5745692c8191bcc25432b8341ced-jurislab-te-ensinando-direito-com-i-a">Abrir JurisLab</a>
+        <a class="btn secondary" href="#guia">Ver Guia Rápido</a>
+        <button class="btn" onclick="window.print()">Imprimir / Salvar em PDF</button>
+        <a class="btn" href="#consultoria">Falar sobre consultoria</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- GUIA RÁPIDO -->
+  <section id="guia">
+    <div class="container">
+      <h2 class="section-title">📘 Guia Rápido de Uso</h2>
+      <p class="section-lead">Como estudar com I.A. de forma prática e confiável.</p>
+      <div class="grid cols-3">
+        <div class="card"><div class="icon">🧭</div><h3>Escolha a trilha</h3><p>Ex.: Constitucional, Civil, Processo Civil, Consumidor, Trabalhista, Tributário (intro), Bancário, Saúde.</p></div>
+        <div class="card"><div class="icon">🧠</div><h3>Explique o objetivo</h3><p>“Quero entender consignação em pagamento”, “Resumo do art. 319 do CPC”, “Simulado de 10 questões”.</p></div>
+        <div class="card"><div class="icon">📚</div><h3>Base legal</h3><p>Receba explicações em <em>Plain Language</em>, com referência a artigos e súmulas a conferir nas <strong>fontes oficiais</strong>.</p></div>
+        <div class="card"><div class="icon">🗺️</div><h3>Mapas mentais</h3><p>Quadros sinópticos e estrutura “Fato → Norma → Conclusão” para memorização rápida.</p></div>
+        <div class="card"><div class="icon">📝</div><h3>Resumos & flashcards</h3><p>Resumo de 1 página, listas de conceitos‑chave e cartões de memorização.</p></div>
+        <div class="card"><div class="icon">🧪</div><h3>Quizzes/simulados</h3><p>Pratique com perguntas objetivas e justificativas, focando pegadinhas comuns.</p></div>
+        <div class="card"><div class="icon">⚖️</div><h3>Checklists processuais</h3><p>Roteiros práticos (ex.: art. 319, 337/341, 1.010 do CPC) para revisão e prática.</p></div>
+        <div class="card"><div class="icon">🔗</div><h3>Links de conferência</h3><p>O JurisLab indica onde <strong>conferir</strong> no Planalto, STF e STJ antes de citar.</p></div>
+        <div class="card"><div class="icon">📤</div><h3>Exportar</h3><p>Copie ou exporte seus resumos e listas para PDF/Word conforme sua rotina.</p></div>
+      </div>
+      <div class="callout" style="margin-top:18px">
+        <div class="icon">ℹ️</div>
+        <div>Para citação formal, <strong>sempre valide</strong> em fontes oficiais (Planalto, STF, STJ). O JurisLab é material de <em>estudo</em>, não parecer jurídico.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECURSOS PRINCIPAIS -->
+  <section id="recursos">
+    <div class="container">
+      <h2 class="section-title">🛠️ Recursos Principais</h2>
+      <p class="section-lead">Ferramentas para aprender mais rápido e com clareza.</p>
+      <div class="grid cols-3">
+        <div class="card"><div class="icon">📖</div><h3>Explicações guiadas</h3><p>Do básico ao avançado, com linguagem simples e exemplos práticos.</p></div>
+        <div class="card"><div class="icon">🧩</div><h3>Comparativos</h3><p>Quadros de “semelhanças e diferenças” entre institutos e ritos.</p></div>
+        <div class="card"><div class="icon">🔍</div><h3>Leitura assistida</h3><p>Orienta como ler julgados, identificando tese, fundamento e efeito prático.</p></div>
+        <div class="card"><div class="icon">🗂️</div><h3>Organização</h3><p>Estruturas e checklists para provas e prática forense.</p></div>
+        <div class="card"><div class="icon">🧾</div><h3>Modelagem</h3><p>Rascunhos didáticos/roteiros; revise antes de usar profissionalmente.</p></div>
+        <div class="card"><div class="icon">📈</div><h3>Métricas de estudo</h3><p>Planeje sessões, acompanhe evolução por temas e reforce pontos fracos.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRILHAS DE ESTUDO -->
+  <section id="trilhas">
+    <div class="container">
+      <h2 class="section-title">🧭 Trilhas de Estudo</h2>
+      <p class="section-lead">Sugestões de início rápido — é só copiar e colar no JurisLab.</p>
+      <div class="grid cols-2">
+        <div class="card"><h3>OAB – 1ª Fase</h3><p>“Monte um plano de 30 dias focado em Processo Civil e Consumidor, com revisões semanais e 15 questões por dia.”</p></div>
+        <div class="card"><h3>Consumidor</h3><p>“Explique vício x fato do produto, com base no CDC, e gere 10 flashcards.”</p></div>
+        <div class="card"><h3>Processo Civil</h3><p>“Checklist do art. 319 do CPC + quadro de nulidades mais comuns.”</p></div>
+        <div class="card"><h3>Trabalhista</h3><p>“Resumo do rito ordinário x sumaríssimo + 10 questões com gabarito.”</p></div>
+        <div class="card"><h3>Bancário</h3><p>“Mapa mental de juros, capitalização e anatocismo (visão geral).”</p></div>
+        <div class="card"><h3>Saúde</h3><p>“Estruture um estudo sobre fornecimento de medicamentos e tutela de urgência.”</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLUXO DE USO -->
+  <section id="fluxo">
+    <div class="container">
+      <h2 class="section-title">🧭 Fluxo Prático</h2>
+      <p class="section-lead">Do objetivo ao resultado.</p>
+      <div class="grid">
+        <div class="stepper">
+          <div class="step"><div><strong>1) Defina o objetivo</strong><br/><span class="muted">Entender, revisar, simular questões ou montar resumo.</span></div></div>
+          <div class="step" style="margin-top:12px"><div><strong>2) Contexto</strong><br/><span class="muted">Forneça tema, caso ou trecho de lei/ementa que deseja estudar.</span></div></div>
+          <div class="step" style="margin-top:12px"><div><strong>3) Entrega</strong><br/><span class="muted">Explicações, quadros e exercícios. Peça aprofundamentos.</span></div></div>
+          <div class="step" style="margin-top:12px"><div><strong>4) Prática</strong><br/><span class="muted">Quizzes e flashcards para fixar. Ajuste o nível de dificuldade.</span></div></div>
+          <div class="step" style="margin-top:12px"><div><strong>5) Exportar</strong><br/><span class="muted">Salve como PDF/Word e integre ao seu caderno digital.</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="container">
+      <h2 class="section-title">❓ Perguntas Frequentes</h2>
+      <details><summary>O JurisLab substitui professor ou advogado?</summary><p>Não. É um acelerador de estudo e revisão. Para uso profissional, valide fundamentos e decisões.</p></details>
+      <details><summary>As referências são confiáveis?</summary><p>O JurisLab indica onde conferir <strong>oficialmente</strong> (Planalto, STF, STJ). Sempre cheque o texto vigente e julgados atualizados.</p></details>
+      <details><summary>Serve para prática forense?</summary><p>Ajuda com roteiros e checklists. Qualquer minuto/peça deve ser revisada por profissional habilitado.</p></details>
+      <details><summary>Privacidade</summary><p>Evite dados sensíveis. Prefira exemplos anônimos e conteúdos públicos para estudo.</p></details>
+      <details><summary>É gratuito?</summary><p>O acesso depende da sua assinatura do ChatGPT. O JurisLab em si é disponibilizado por mim para estudo e produtividade.</p></details>
+    </div>
+  </section>
+
+  <!-- SOBRE O CRIADOR -->
+  <section id="sobre">
+    <div class="container">
+      <h2 class="section-title">👨‍⚖️ Sobre o Criador</h2>
+      <div class="grid cols-2">
+        <div class="card">
+          <h3>Rogério Bezerra — Advogado</h3>
+          <p><strong>OAB/AL nº 19.249</strong></p>
+          <p>Graduado em Direito Processual Civil (UFAL) e Pós‑Graduado em Processo Civil (CERS).</p>
+          <p><strong>Atuação:</strong> contencioso e <em>Legal Tech</em> — sistematizo conhecimento jurídico, otimizo fluxos e crio ferramentas que tornam o Direito mais acessível e efetivo.</p>
+          <p><strong>Inovação:</strong> Membro da Comissão de Inovação, Tecnologia e Proteção de Dados da OAB/AL.</p>
+        </div>
+        <div class="card">
+          <h3>Como posso ajudar</h3>
+          <ul style="margin:0; padding-left:18px">
+            <li>Trilhas de estudo para equipes jurídicas.</li>
+            <li>Padrões e checklists para prática contenciosa.</li>
+            <li>Treinamento e implantação de fluxos com I.A.</li>
+            <li>Curadoria de fontes oficiais para citação.</li>
+          </ul>
+          <div class="callout" style="margin-top:14px"><div class="icon">⚖️</div><div>Foco em <strong>clareza</strong>, <strong>aplicação prática</strong> e <strong>precisão</strong>.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTATO -->
+  <!-- CONSULTORIA -->
+  <section id="consultoria">
+    <div class="container">
+      <h2 class="section-title">🤝 Consultoria em Legal Tech para Advogados</h2>
+      <p class="section-lead">Implante fluxos com I.A. no seu contencioso e equipe com segurança e precisão técnica.</p>
+      <div class="grid cols-2">
+        <div class="card">
+          <h3>O que eu entrego</h3>
+          <ul style="margin:0; padding-left:18px">
+            <li>Diagnóstico e plano de adoção de I.A. (rotinas, riscos e metas).</li>
+            <li>Treinamento prático para equipes (prompting jurídico e boas práticas).</li>
+            <li>Padronização de minutas, checklists e fluxos <em>AI‑first</em>.</li>
+            <li>Curadoria de fontes oficiais (Planalto, STF, STJ) e governança (LGPD/ética).</li>
+            <li>Métricas de qualidade e ganhos de eficiência.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Para estudantes e estagiários</h3>
+          <ul style="margin:0; padding-left:18px">
+            <li>Domine <strong>IA aplicada ao Direito</strong>: leitura guiada de julgados, mapas mentais e resumos inteligentes.</li>
+            <li>Trilhas práticas para <strong>OAB</strong> e início de carreira (Plain Language + exercícios).</li>
+            <li>Oficinas: estrutura de <strong>peças e checklists</strong> com apoio do JurisLab.</li>
+            <li>Boas práticas de <strong>LGPD/ética</strong> ao estudar e compartilhar materiais.</li>
+            <li>Monte um <strong>portfólio</strong> com entregas objetivas e organização profissional.</li>
+          </ul>
+          <div class="cta" style="margin-top:10px">
+            <a class="btn primary" rel="noopener noreferrer" target="_blank" href="https://wa.me/5582987673811?text=Ol%C3%A1%2C%20Rog%C3%A9rio!%20Quero%20mentoria%20em%20IA%20jur%C3%ADdica%20(JurisLab).%20Podemos%20conversar%3F">Quero mentoria</a>
+          </div>
+          <p class="muted" style="margin-top:8px">Mentorias e workshops práticos para acelerar seu aprendizado e destacar seu currículo.</p>
+        </div>
+          <p class="muted" style="margin-top:8px">Treinamentos práticos, templates e governança (LGPD, ética e fontes oficiais).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contato">
+    <div class="container">
+      <h2 class="section-title">📞 Contato</h2>
+      <div class="grid cols-2">
+        <div class="card">
+          <h3>Fale comigo</h3>
+          <p>E‑mail: <a href="mailto:rogeriobezerra19249@gmail.com">rogeriobezerra19249@gmail.com</a></p>
+          <p>WhatsApp: <a rel="noopener noreferrer" target="_blank" href="https://wa.me/5582987673811">(82) 9 8767‑3811</a> • <a rel="noopener noreferrer" target="_blank" href="https://wa.me/5582981162313">(82) 9 8116‑2313</a></p>
+          <p>Instagram: <a rel="noopener noreferrer" target="_blank" href="https://instagram.com/rogeriosbf">@rogeriosbf</a></p>
+          <p>Site: <a rel="noopener noreferrer" target="_blank" href="https://sbfrogerio.github.io/Rogerio-Bezerra/">sbfrogerio.github.io/Rogerio‑Bezerra</a></p>
+        </div>
+        <div class="card">
+          <h3>Acesso rápido</h3>
+          <div class="cta" style="margin-top:8px">
+            <a class="btn primary" rel="noopener noreferrer" target="_blank" href="https://chatgpt.com/g/g-68aa5745692c8191bcc25432b8341ced-jurislab-te-ensinando-direito-com-i-a">Abrir JurisLab</a>
+            <a class="btn" href="#guia">Ver Guia</a>
+          </div>
+          <p class="muted" style="margin-top:8px">Material educacional. Confirme sempre em fontes oficiais (Planalto, STF, STJ) antes de citar.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p><strong>JurisLab — te ensinando Direito com I.A.</strong> • criado por Rogério Bezerra • OAB/AL 19.249</p>
+      <p class="muted">Material de estudo — não constitui consultoria jurídica individualizada. Valide sempre as referências oficiais.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{ const id=a.getAttribute('href'); if(id.length>1){ e.preventDefault(); document.querySelector(id).scrollIntoView({behavior:'smooth'}); } });
+    });
+  </script>
+</body>
+</html>
